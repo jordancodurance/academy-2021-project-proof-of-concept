@@ -12,7 +12,7 @@ export class GoogleAuthenticator implements Authenticator {
         const auth = gapi.auth2.getAuthInstance();
         const signInResponse = await auth.signIn();
 
-        return signInResponse.getAuthResponse().access_token;
+        return signInResponse.getAuthResponse().id_token;
     }
 
     private async loadGoogleAuthLibrary() {
