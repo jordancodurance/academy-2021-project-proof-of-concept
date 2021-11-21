@@ -1,10 +1,10 @@
 import {render, screen, waitFor} from "@testing-library/react";
 import Login from "./Login";
 import {LoginService} from "./LoginService";
-import {AccessTokenStore} from "../../shared/authentication/AccessTokenStore";
+import {AccessTokenStore} from "../shared/authentication/AccessTokenStore";
 import {BrowserRouter} from "react-router-dom";
 import React from "react";
-import {Authenticator} from "../../shared/authentication/Authenticator";
+import {Authenticator} from "../shared/authentication/Authenticator";
 
 describe('on login rendered it should', () => {
     let accessTokenResult: Promise<string>;

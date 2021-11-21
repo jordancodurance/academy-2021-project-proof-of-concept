@@ -1,5 +1,5 @@
-import {AccessTokenStore} from "../../shared/authentication/AccessTokenStore";
-import {Authenticator} from "../../shared/authentication/Authenticator";
+import {AccessTokenStore} from "../shared/authentication/AccessTokenStore";
+import {Authenticator} from "../shared/authentication/Authenticator";
 
 export class LoginService {
 
