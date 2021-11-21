@@ -21,9 +21,10 @@ export class AuthenticatedAxiosClient implements AuthenticatedHttpClient {
                 const responseStatus = error.response.status;
                 if (responseStatus === 401 || responseStatus === 403) {
                     this.applicationNavigator.navigateToLogin();
-                } else {
-                    throw error;
+                    return new Promise(() => {});
                 }
+
+                return Promise.reject(error);
             }
         );
     }

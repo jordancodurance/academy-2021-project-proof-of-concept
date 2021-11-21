@@ -10,7 +10,6 @@ const Home = ({authenticatedHttpClient}: { authenticatedHttpClient: Authenticate
   const [profile, setProfile] = useState<Profile | undefined>(undefined);
 
     useEffect(() => {
-        const abortController = new AbortController();
         const getProfile = async () => {
             const response = await authenticatedHttpClient.get('http://localhost:3004/dev/profile');
             const profile = response.data as Profile;
@@ -18,8 +17,6 @@ const Home = ({authenticatedHttpClient}: { authenticatedHttpClient: Authenticate
         }
 
         getProfile();
-
-        return () => abortController.abort();
     }, [authenticatedHttpClient, setProfile]);
 
   return (
