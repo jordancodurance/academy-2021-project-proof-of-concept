@@ -1,10 +1,15 @@
 import { gapi } from 'gapi-script';
 import {Authenticator} from "./Authenticator";
+import jwtDecode, {JwtPayload} from "jwt-decode";
 
 export class GoogleAuthenticator implements Authenticator {
 
     isValidToken(token: string): boolean {
-        return true;
+        const decodedToken = jwtDecode<JwtPayload>(token);
+        const tokenExpiry = decodedToken.exp;
+        if (tokenExpiry === undefined) return false;
+
+        return (tokenExpiry * 1000) > Date.now();
     }
 
     async getAccessToken(): Promise<string> {
