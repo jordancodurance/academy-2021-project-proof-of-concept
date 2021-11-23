@@ -2,19 +2,19 @@ import {render, screen, waitFor} from "@testing-library/react";
 import React from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {AuthenticatedRouteGuard} from "./AuthenticatedRouteGuard";
-import {AccessTokenStore} from "../authentication/AccessTokenStore";
+import {LocalStorageAccessTokenStore} from "../authentication/LocalStorageAccessTokenStore";
 import {Authenticator} from "../authentication/Authenticator";
 
 describe('authenticated route guard should', () => {
     let isValidAccessToken: boolean;
 
-    let accessTokenStore: AccessTokenStore;
+    let accessTokenStore: LocalStorageAccessTokenStore;
     let authenticator:Authenticator;
 
     beforeEach(() => {
         window.localStorage.clear();
         authenticator = buildAuthenticatorStub();
-        accessTokenStore = new AccessTokenStore();
+        accessTokenStore = new LocalStorageAccessTokenStore();
     });
 
     test('load protected route with valid access token', async () => {

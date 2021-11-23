@@ -1,17 +1,10 @@
-import {NavigateFunction} from "react-router";
+export abstract class ApplicationNavigator {
 
-export class ApplicationNavigator {
-    private readonly navigator: NavigateFunction;
+    public static readonly LOGIN_ROUTE = '/login';
+    public static readonly HOME_ROUTE = '/home';
 
-    constructor(navigator: NavigateFunction) {
-        this.navigator = navigator;
-    }
+    abstract navigateToLogin(): void;
 
-    public navigateToLogin() {
-        this.navigator('/login');
-    }
+    abstract navigateToHome(): void;
 
-    public navigateToHome() {
-        this.navigator('/home');
-    }
 }

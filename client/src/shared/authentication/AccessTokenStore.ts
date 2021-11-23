@@ -1,11 +1,9 @@
-export class AccessTokenStore {
+export abstract class AccessTokenStore {
 
-    public addToken(token: string): void {
-        localStorage.setItem('proof-of-concept-access-token', token);
-    }
+    protected readonly ACCESS_TOKEN_KEY = 'proof-of-concept-access-token'
 
-    public getToken(): string | null {
-        return localStorage.getItem('proof-of-concept-access-token');
-    }
+    abstract set(token: string): void
+
+    abstract get(): string | null
 
 }

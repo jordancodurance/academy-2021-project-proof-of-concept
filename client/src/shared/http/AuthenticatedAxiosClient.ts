@@ -1,15 +1,15 @@
 import {AuthenticatedHttpClient} from "./AuthenticatedHttpClient";
 import axios from "axios";
-import {AccessTokenStore} from "../authentication/AccessTokenStore";
+import {LocalStorageAccessTokenStore} from "../authentication/LocalStorageAccessTokenStore";
 import {ApplicationNavigator} from "../navigation/ApplicationNavigator";
 import {HttpResponse} from "./HttpResponse";
 
 export class AuthenticatedAxiosClient implements AuthenticatedHttpClient {
     private readonly axiosClient = axios.create();
     private readonly applicationNavigator: ApplicationNavigator;
-    private readonly accessTokenStore: AccessTokenStore;
+    private readonly accessTokenStore: LocalStorageAccessTokenStore;
 
-    constructor(applicationNavigator: ApplicationNavigator, accessTokenStore: AccessTokenStore) {
+    constructor(applicationNavigator: ApplicationNavigator, accessTokenStore: LocalStorageAccessTokenStore) {
         this.applicationNavigator = applicationNavigator;
         this.accessTokenStore = accessTokenStore;
     }
@@ -34,7 +34,7 @@ export class AuthenticatedAxiosClient implements AuthenticatedHttpClient {
     }
 
     private addAuthorisationHeader() {
-        const accessToken = this.accessTokenStore.getToken();
+        const accessToken = this.accessTokenStore.get();
         return {
             headers: {
                 'Authorization': `Bearer ${accessToken}`,

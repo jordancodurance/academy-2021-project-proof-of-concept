@@ -1,9 +1,10 @@
 import {AuthenticatedAxiosClient} from "./AuthenticatedAxiosClient";
 import {ApplicationNavigator} from "../navigation/ApplicationNavigator";
-import {AccessTokenStore} from "../authentication/AccessTokenStore";
+import {LocalStorageAccessTokenStore} from "../authentication/LocalStorageAccessTokenStore";
 import {act, waitFor} from "@testing-library/react";
 import {setupServer} from "msw/node";
 import {rest} from "msw";
+import {ReactRouterApplicationNavigator} from "../navigation/ReactRouterApplicationNavigator";
 
 const navigator = jest.fn();
 
@@ -11,15 +12,15 @@ describe('authenticated axios client should', () => {
     const server = setupServer();
 
     let applicationNavigator: ApplicationNavigator;
-    let accessTokenStore: AccessTokenStore;
+    let accessTokenStore: LocalStorageAccessTokenStore;
 
     let authenticatedAxiosClient: AuthenticatedAxiosClient;
 
     beforeAll(() => server.listen());
 
     beforeEach(() => {
-        applicationNavigator = new ApplicationNavigator(navigator);
-        accessTokenStore = new AccessTokenStore();
+        applicationNavigator = new ReactRouterApplicationNavigator(navigator);
+        accessTokenStore = new LocalStorageAccessTokenStore();
         authenticatedAxiosClient = new AuthenticatedAxiosClient(applicationNavigator, accessTokenStore);
     });
 

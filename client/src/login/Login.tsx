@@ -1,18 +1,15 @@
 import React, {useState} from 'react';
-import {LoginService} from "./LoginService";
+import {LoginPolicyService} from "./LoginPolicyService";
 
-const Login = ({loginService}: { loginService: LoginService }) => {
+const Login = ({loginPolicyService}: { loginPolicyService: LoginPolicyService }) => {
     const [hasLoginError, setHasLoginError] = useState(false);
 
     async function attemptLogin() {
         setHasLoginError(false);
 
-        await loginService
+        await loginPolicyService
             .attemptLogin()
-            .catch(error => {
-                console.log(error);
-                setHasLoginError(true);
-            });
+            .catch(() => setHasLoginError(true));
     }
 
     return (
