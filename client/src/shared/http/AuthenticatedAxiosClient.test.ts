@@ -4,8 +4,8 @@ import {act, waitFor} from "@testing-library/react";
 import {setupServer} from "msw/node";
 import {rest} from "msw";
 import {instance, mock, verify, when} from "ts-mockito";
-import {AuthenticatedUserStore} from "../authentication/AuthenticatedUserStore";
-import {AuthenticatedUser} from "../authentication/AuthenticatedUser";
+import {AuthenticatedUserStore} from "../authentication/persistence/AuthenticatedUserStore";
+import {AuthenticatedUser} from "../authentication/persistence/AuthenticatedUser";
 
 describe('authenticated axios client should', () => {
     const server = setupServer();

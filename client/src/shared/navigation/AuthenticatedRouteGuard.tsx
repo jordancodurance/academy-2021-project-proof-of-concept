@@ -2,7 +2,7 @@ import {Navigate, useLocation} from "react-router-dom";
 import React from "react";
 import {Authenticator} from "../authentication/authenticator/Authenticator";
 import {ApplicationNavigator} from "./ApplicationNavigator";
-import {AuthenticatedUserStore} from "../authentication/AuthenticatedUserStore";
+import {AuthenticatedUserStore} from "../authentication/persistence/AuthenticatedUserStore";
 
 type Props = {
     authenticatedUserStore: AuthenticatedUserStore;

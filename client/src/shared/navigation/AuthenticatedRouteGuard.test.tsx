@@ -4,8 +4,8 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {AuthenticatedRouteGuard} from "./AuthenticatedRouteGuard";
 import {Authenticator} from "../authentication/authenticator/Authenticator";
 import {instance, mock, when} from "ts-mockito";
-import {AuthenticatedUserStore} from "../authentication/AuthenticatedUserStore";
-import {AuthenticatedUser} from "../authentication/AuthenticatedUser";
+import {AuthenticatedUserStore} from "../authentication/persistence/AuthenticatedUserStore";
+import {AuthenticatedUser} from "../authentication/persistence/AuthenticatedUser";
 
 describe('authenticated route guard should', () => {
 

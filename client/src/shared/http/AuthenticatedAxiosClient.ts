@@ -2,7 +2,7 @@ import {AuthenticatedHttpClient} from "./AuthenticatedHttpClient";
 import axios, {AxiosRequestConfig} from "axios";
 import {ApplicationNavigator} from "../navigation/ApplicationNavigator";
 import {HttpResponse} from "./HttpResponse";
-import {AuthenticatedUserStore} from "../authentication/AuthenticatedUserStore";
+import {AuthenticatedUserStore} from "../authentication/persistence/AuthenticatedUserStore";
 
 export class AuthenticatedAxiosClient implements AuthenticatedHttpClient {
     private readonly axiosClient = axios.create();

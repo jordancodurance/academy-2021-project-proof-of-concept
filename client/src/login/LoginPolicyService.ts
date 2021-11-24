@@ -1,6 +1,6 @@
 import {Authenticator} from "../shared/authentication/authenticator/Authenticator";
 import {ApplicationNavigator} from "../shared/navigation/ApplicationNavigator";
-import {AuthenticatedUserStore} from "../shared/authentication/AuthenticatedUserStore";
+import {AuthenticatedUserStore} from "../shared/authentication/persistence/AuthenticatedUserStore";
 
 export class LoginPolicyService {
 

@@ -2,8 +2,8 @@ import {LoginPolicyService} from "./LoginPolicyService";
 import {Authenticator} from "../shared/authentication/authenticator/Authenticator";
 import {ApplicationNavigator} from "../shared/navigation/ApplicationNavigator";
 import {instance, mock, verify, when} from "ts-mockito";
-import {AuthenticatedUserStore} from "../shared/authentication/AuthenticatedUserStore";
-import {AuthenticatedUser} from "../shared/authentication/AuthenticatedUser";
+import {AuthenticatedUserStore} from "../shared/authentication/persistence/AuthenticatedUserStore";
+import {AuthenticatedUser} from "../shared/authentication/persistence/AuthenticatedUser";
 
 describe('login policy service should ', () => {
     const authenticator = mock<Authenticator>();

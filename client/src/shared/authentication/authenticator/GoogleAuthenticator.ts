@@ -1,6 +1,6 @@
 import {Authenticator} from "./Authenticator";
 import jwtDecode, {JwtPayload} from "jwt-decode";
-import {AuthenticatedUser} from "../AuthenticatedUser";
+import {AuthenticatedUser} from "../persistence/AuthenticatedUser";
 import {GoogleUserProvider} from "./GoogleUserProvider";
 
 export class GoogleAuthenticator implements Authenticator {

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {AuthenticatedHttpClient} from "../shared/http/AuthenticatedHttpClient";
-import {AuthenticatedUserStore} from "../shared/authentication/AuthenticatedUserStore";
+import {AuthenticatedUserStore} from "../shared/authentication/persistence/AuthenticatedUserStore";
 
 type Profile = {
     name: string;
