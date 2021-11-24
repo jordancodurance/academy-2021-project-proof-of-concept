@@ -1,4 +1,4 @@
-import {Authenticator} from "../shared/authentication/Authenticator";
+import {Authenticator} from "../shared/authentication/authenticator/Authenticator";
 import {ApplicationNavigator} from "../shared/navigation/ApplicationNavigator";
 import {AuthenticatedUserStore} from "../shared/authentication/AuthenticatedUserStore";
 

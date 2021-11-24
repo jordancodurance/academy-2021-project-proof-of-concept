@@ -3,16 +3,18 @@ import {Route, Routes, useNavigate} from "react-router-dom";
 import Home from "./home/Home";
 import Login from "./login/Login";
 import {AuthenticatedRouteGuard} from "./shared/navigation/AuthenticatedRouteGuard";
-import {GoogleAuthenticator} from "./shared/authentication/GoogleAuthenticator";
+import {GoogleAuthenticator} from "./shared/authentication/authenticator/GoogleAuthenticator";
 import {LocalStorageAuthenticatedUserStore} from "./shared/authentication/LocalStorageAuthenticatedUserStore";
 import {LoginPolicyService} from "./login/LoginPolicyService";
 import {AuthenticatedAxiosClient} from "./shared/http/AuthenticatedAxiosClient";
 import {ReactRouterApplicationNavigator} from "./shared/navigation/ReactRouterApplicationNavigator";
 import {ApplicationNavigator} from "./shared/navigation/ApplicationNavigator";
+import {GoogleUserProvider} from "./shared/authentication/authenticator/GoogleUserProvider";
 
 function App() {
     const navigator = useNavigate();
-    const authenticator = new GoogleAuthenticator();
+    const googleUserProvider = new GoogleUserProvider();
+    const authenticator = new GoogleAuthenticator(googleUserProvider);
     const authenticatedUserStore = new LocalStorageAuthenticatedUserStore();
     const applicationNavigator = new ReactRouterApplicationNavigator(navigator);
     const loginService = new LoginPolicyService(authenticator, authenticatedUserStore, applicationNavigator);

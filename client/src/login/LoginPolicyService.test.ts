@@ -1,5 +1,5 @@
 import {LoginPolicyService} from "./LoginPolicyService";
-import {Authenticator} from "../shared/authentication/Authenticator";
+import {Authenticator} from "../shared/authentication/authenticator/Authenticator";
 import {ApplicationNavigator} from "../shared/navigation/ApplicationNavigator";
 import {instance, mock, verify, when} from "ts-mockito";
 import {AuthenticatedUserStore} from "../shared/authentication/AuthenticatedUserStore";
@@ -20,6 +20,7 @@ describe('login policy service should ', () => {
         const authenticatedUser: AuthenticatedUser = {
             name: "Best User",
             email: "best.user@codurance.com",
+            profileImageUrl: 'https://hosting.site/profile/best-user-image.png',
             accessToken: "access-token"
         };
         when(authenticator.getAuthenticatedUser()).thenResolve(authenticatedUser);

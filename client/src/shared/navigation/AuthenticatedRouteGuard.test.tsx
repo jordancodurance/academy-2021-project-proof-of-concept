@@ -2,7 +2,7 @@ import {render, screen, waitFor} from "@testing-library/react";
 import React from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {AuthenticatedRouteGuard} from "./AuthenticatedRouteGuard";
-import {Authenticator} from "../authentication/Authenticator";
+import {Authenticator} from "../authentication/authenticator/Authenticator";
 import {instance, mock, when} from "ts-mockito";
 import {AuthenticatedUserStore} from "../authentication/AuthenticatedUserStore";
 import {AuthenticatedUser} from "../authentication/AuthenticatedUser";
