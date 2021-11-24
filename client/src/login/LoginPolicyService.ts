@@ -1,23 +1,23 @@
-import {LocalStorageAccessTokenStore} from "../shared/authentication/LocalStorageAccessTokenStore";
 import {Authenticator} from "../shared/authentication/Authenticator";
 import {ApplicationNavigator} from "../shared/navigation/ApplicationNavigator";
+import {AuthenticatedUserStore} from "../shared/authentication/AuthenticatedUserStore";
 
 export class LoginPolicyService {
 
     private authenticator: Authenticator;
-    private accessTokenStore: LocalStorageAccessTokenStore;
+    private authenticatedUserStore: AuthenticatedUserStore;
     private applicationNavigator: ApplicationNavigator;
 
-    constructor(authenticator: Authenticator, accessTokenStore: LocalStorageAccessTokenStore, applicationNavigator: ApplicationNavigator) {
+    constructor(authenticator: Authenticator, authenticatedUserStore: AuthenticatedUserStore, applicationNavigator: ApplicationNavigator) {
         this.authenticator = authenticator;
-        this.accessTokenStore = accessTokenStore;
+        this.authenticatedUserStore = authenticatedUserStore;
         this.applicationNavigator = applicationNavigator;
     }
 
     attemptLogin(): Promise<void> {
-        return this.authenticator.getAccessToken()
-            .then(token => {
-                this.accessTokenStore.set(token);
+        return this.authenticator.getAuthenticatedUser()
+            .then(user => {
+                this.authenticatedUserStore.set(user);
                 this.applicationNavigator.navigateToHome();
             });
     }

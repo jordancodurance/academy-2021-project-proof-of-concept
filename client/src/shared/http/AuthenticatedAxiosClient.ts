@@ -1,17 +1,17 @@
 import {AuthenticatedHttpClient} from "./AuthenticatedHttpClient";
-import axios from "axios";
-import {LocalStorageAccessTokenStore} from "../authentication/LocalStorageAccessTokenStore";
+import axios, {AxiosRequestConfig} from "axios";
 import {ApplicationNavigator} from "../navigation/ApplicationNavigator";
 import {HttpResponse} from "./HttpResponse";
+import {AuthenticatedUserStore} from "../authentication/AuthenticatedUserStore";
 
 export class AuthenticatedAxiosClient implements AuthenticatedHttpClient {
     private readonly axiosClient = axios.create();
     private readonly applicationNavigator: ApplicationNavigator;
-    private readonly accessTokenStore: LocalStorageAccessTokenStore;
+    private readonly authenticatedUserStore: AuthenticatedUserStore;
 
-    constructor(applicationNavigator: ApplicationNavigator, accessTokenStore: LocalStorageAccessTokenStore) {
+    constructor(applicationNavigator: ApplicationNavigator, authenticatedUserStore: AuthenticatedUserStore) {
         this.applicationNavigator = applicationNavigator;
-        this.accessTokenStore = accessTokenStore;
+        this.authenticatedUserStore = authenticatedUserStore;
     }
 
     enableResponseInterception(): void {
@@ -21,7 +21,8 @@ export class AuthenticatedAxiosClient implements AuthenticatedHttpClient {
                 const responseStatus = error.response.status;
                 if (responseStatus === 401 || responseStatus === 403) {
                     this.applicationNavigator.navigateToLogin();
-                    return new Promise(() => {});
+                    return new Promise(() => {
+                    });
                 }
 
                 return Promise.reject(error);
@@ -33,8 +34,10 @@ export class AuthenticatedAxiosClient implements AuthenticatedHttpClient {
         return this.axiosClient.get(url, this.addAuthorisationHeader());
     }
 
-    private addAuthorisationHeader() {
-        const accessToken = this.accessTokenStore.get();
+    private addAuthorisationHeader(): AxiosRequestConfig {
+        const authenticatedUser = this.authenticatedUserStore.get();
+        const accessToken = authenticatedUser?.accessToken;
+
         return {
             headers: {
                 'Authorization': `Bearer ${accessToken}`,

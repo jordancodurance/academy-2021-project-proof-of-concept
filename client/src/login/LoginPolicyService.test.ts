@@ -2,25 +2,31 @@ import {LoginPolicyService} from "./LoginPolicyService";
 import {Authenticator} from "../shared/authentication/Authenticator";
 import {ApplicationNavigator} from "../shared/navigation/ApplicationNavigator";
 import {instance, mock, verify, when} from "ts-mockito";
-import {AccessTokenStore} from "../shared/authentication/AccessTokenStore";
+import {AuthenticatedUserStore} from "../shared/authentication/AuthenticatedUserStore";
+import {AuthenticatedUser} from "../shared/authentication/AuthenticatedUser";
 
 describe('login policy service should ', () => {
     const authenticator = mock<Authenticator>();
-    const accessTokenStore = mock<AccessTokenStore>();
+    const authenticatedUserStore = mock<AuthenticatedUserStore>();
     const applicationNavigator = mock<ApplicationNavigator>();
 
     const loginService = new LoginPolicyService(
         instance(authenticator),
-        instance(accessTokenStore),
+        instance(authenticatedUserStore),
         instance(applicationNavigator)
     );
 
     test('perform login criteria on successful login', async () => {
-        when(authenticator.getAccessToken()).thenResolve("access-token");
+        const authenticatedUser: AuthenticatedUser = {
+            name: "Best User",
+            email: "best.user@codurance.com",
+            accessToken: "access-token"
+        };
+        when(authenticator.getAuthenticatedUser()).thenResolve(authenticatedUser);
 
         await loginService.attemptLogin();
 
-        verify(accessTokenStore.set('access-token')).calledBefore(applicationNavigator.navigateToHome());
+        verify(authenticatedUserStore.set(authenticatedUser)).calledBefore(applicationNavigator.navigateToHome());
     });
 
 });

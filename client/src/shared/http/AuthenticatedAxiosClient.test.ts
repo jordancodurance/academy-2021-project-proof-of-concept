@@ -1,28 +1,24 @@
 import {AuthenticatedAxiosClient} from "./AuthenticatedAxiosClient";
 import {ApplicationNavigator} from "../navigation/ApplicationNavigator";
-import {LocalStorageAccessTokenStore} from "../authentication/LocalStorageAccessTokenStore";
 import {act, waitFor} from "@testing-library/react";
 import {setupServer} from "msw/node";
 import {rest} from "msw";
-import {ReactRouterApplicationNavigator} from "../navigation/ReactRouterApplicationNavigator";
-
-const navigator = jest.fn();
+import {instance, mock, verify, when} from "ts-mockito";
+import {AuthenticatedUserStore} from "../authentication/AuthenticatedUserStore";
+import {AuthenticatedUser} from "../authentication/AuthenticatedUser";
 
 describe('authenticated axios client should', () => {
     const server = setupServer();
 
-    let applicationNavigator: ApplicationNavigator;
-    let accessTokenStore: LocalStorageAccessTokenStore;
+    const applicationNavigator = mock<ApplicationNavigator>();
+    const authenticatedUserStore = mock<AuthenticatedUserStore>();
 
-    let authenticatedAxiosClient: AuthenticatedAxiosClient;
+    const authenticatedAxiosClient = new AuthenticatedAxiosClient(
+        instance(applicationNavigator),
+        instance(authenticatedUserStore),
+    );
 
     beforeAll(() => server.listen());
-
-    beforeEach(() => {
-        applicationNavigator = new ReactRouterApplicationNavigator(navigator);
-        accessTokenStore = new LocalStorageAccessTokenStore();
-        authenticatedAxiosClient = new AuthenticatedAxiosClient(applicationNavigator, accessTokenStore);
-    });
 
     afterEach(() => server.resetHandlers());
 
@@ -43,24 +39,25 @@ describe('authenticated axios client should', () => {
         });
 
         return waitFor(() => {
-            expect(navigator).toBeCalledWith('/login');
+            verify(applicationNavigator.navigateToLogin()).called();
         });
     });
 
     test('perform get with stored access token in authorisation header', async () => {
+        const authenticatedUser: AuthenticatedUser = {accessToken: "access-token"} as AuthenticatedUser;
         let authorisationHeader: string | null;
+        when(authenticatedUserStore.get()).thenReturn(authenticatedUser);
         server.use(
             rest.get('http://localhost:3000/path', (request, response) => {
                 authorisationHeader = request.headers.get('Authorization');
                 return response();
             })
         );
-        window.localStorage.setItem('proof-of-concept-access-token', 'token');
 
         await authenticatedAxiosClient.get('http://localhost:3000/path');
 
         return waitFor(() => {
-            expect(authorisationHeader).toBe('Bearer token');
+            expect(authorisationHeader).toBe('Bearer access-token');
         });
     });
 });

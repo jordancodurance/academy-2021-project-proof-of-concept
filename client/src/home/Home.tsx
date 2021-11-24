@@ -1,13 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {AuthenticatedHttpClient} from "../shared/http/AuthenticatedHttpClient";
+import {AuthenticatedUserStore} from "../shared/authentication/AuthenticatedUserStore";
 
 type Profile = {
-  name: string;
-  email: string;
+    name: string;
+    email: string;
 };
 
-const Home = ({authenticatedHttpClient}: { authenticatedHttpClient: AuthenticatedHttpClient }) => {
-  const [profile, setProfile] = useState<Profile | undefined>(undefined);
+type Props = {
+    authenticatedHttpClient: AuthenticatedHttpClient,
+    authenticatedUserStore: AuthenticatedUserStore
+};
+
+const Home = ({authenticatedHttpClient, authenticatedUserStore}: Props) => {
+    const authenticatedUser = authenticatedUserStore.get();
+    const [profile, setProfile] = useState<Profile | undefined>(undefined);
 
     useEffect(() => {
         const getProfile = async () => {
@@ -19,18 +26,19 @@ const Home = ({authenticatedHttpClient}: { authenticatedHttpClient: Authenticate
         getProfile();
     }, [authenticatedHttpClient, setProfile]);
 
-  return (
-      <>
-        <p>Logged In</p>
-          {profile &&
-          <>
-              <p>Name: {profile.name}</p>
-              <p>Email: {profile.email}</p>
-          </>
-          }
+    return (
+        <>
+            <p>Logged In: <img src={authenticatedUser?.profileImageUrl}/> {authenticatedUser?.name}</p>
 
-      </>
-  );
+            {profile &&
+            <>
+                <p>Backend Profile Name: {profile.name}</p>
+                <p>Backend Profile Name: {profile.email}</p>
+            </>
+            }
+
+        </>
+    );
 };
 
 export default Home;

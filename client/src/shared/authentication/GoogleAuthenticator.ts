@@ -1,6 +1,7 @@
 import { gapi } from 'gapi-script';
 import {Authenticator} from "./Authenticator";
 import jwtDecode, {JwtPayload} from "jwt-decode";
+import {AuthenticatedUser} from "./AuthenticatedUser";
 
 export class GoogleAuthenticator implements Authenticator {
 
@@ -12,12 +13,19 @@ export class GoogleAuthenticator implements Authenticator {
         return (tokenExpiry * 1000) > Date.now();
     }
 
-    async getAccessToken(): Promise<string> {
+    async getAuthenticatedUser(): Promise<AuthenticatedUser> {
         await this.loadGoogleAuthLibrary();
         const auth = gapi.auth2.getAuthInstance();
         const signInResponse = await auth.signIn();
+        const authResponse = signInResponse.getAuthResponse();
+        const profile = signInResponse.getBasicProfile();
 
-        return signInResponse.getAuthResponse().id_token;
+        return {
+            name: profile.getName(),
+            email: profile.getEmail(),
+            profileImageUrl: profile.getImageUrl(),
+            accessToken: authResponse.id_token
+        };
     }
 
     private async loadGoogleAuthLibrary() {

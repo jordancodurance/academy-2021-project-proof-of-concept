@@ -2,33 +2,31 @@ import {render, screen, waitFor} from "@testing-library/react";
 import React from "react";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {AuthenticatedRouteGuard} from "./AuthenticatedRouteGuard";
-import {LocalStorageAccessTokenStore} from "../authentication/LocalStorageAccessTokenStore";
 import {Authenticator} from "../authentication/Authenticator";
+import {instance, mock, when} from "ts-mockito";
+import {AuthenticatedUserStore} from "../authentication/AuthenticatedUserStore";
+import {AuthenticatedUser} from "../authentication/AuthenticatedUser";
 
 describe('authenticated route guard should', () => {
-    let isValidAccessToken: boolean;
 
-    let accessTokenStore: LocalStorageAccessTokenStore;
-    let authenticator:Authenticator;
-
-    beforeEach(() => {
-        window.localStorage.clear();
-        authenticator = buildAuthenticatorStub();
-        accessTokenStore = new LocalStorageAccessTokenStore();
-    });
+    const authenticatedUserStore = mock<AuthenticatedUserStore>();
+    const authenticator = mock<Authenticator>();
 
     test('load protected route with valid access token', async () => {
-        window.localStorage.setItem('proof-of-concept-access-token', 'token');
-        isValidAccessToken = true;
+        const authenticatedUser: AuthenticatedUser = {accessToken: "access-token"} as AuthenticatedUser;
+        when(authenticatedUserStore.get()).thenReturn(authenticatedUser);
+        when(authenticator.isValidToken("access-token")).thenReturn(true);
 
         await attemptProtectedRouteRender();
 
         expect(await screen.findByText('Protected Route')).toBeInTheDocument();
     });
 
+
     test('redirect to login for invalid access token', async () => {
-        window.localStorage.setItem('proof-of-concept-access-token', 'token');
-        isValidAccessToken = false;
+        const authenticatedUser: AuthenticatedUser = {accessToken: "invalid-access-token"} as AuthenticatedUser;
+        when(authenticatedUserStore.get()).thenReturn(authenticatedUser);
+        when(authenticator.isValidToken("invalid-access-token")).thenReturn(false);
 
         await attemptProtectedRouteRender();
 
@@ -37,7 +35,9 @@ describe('authenticated route guard should', () => {
         });
     });
 
-    test('redirect to login for missing access token', async () => {
+    test('redirect to login when user has not logged in yet', async () => {
+        when(authenticatedUserStore.get()).thenReturn(null);
+
         await attemptProtectedRouteRender();
 
         return waitFor(() => {
@@ -50,7 +50,8 @@ describe('authenticated route guard should', () => {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={
-                        <AuthenticatedRouteGuard accessTokenStore={accessTokenStore} authenticator={authenticator}>
+                        <AuthenticatedRouteGuard authenticatedUserStore={instance(authenticatedUserStore)}
+                                                 authenticator={instance(authenticator)}>
                             <div>Protected Route</div>
                         </AuthenticatedRouteGuard>
                     }/>
@@ -58,14 +59,4 @@ describe('authenticated route guard should', () => {
                 </Routes>
             </BrowserRouter>
         );
-
-    const buildAuthenticatorStub = () => new class AuthenticatorStub implements Authenticator {
-        getAccessToken(): Promise<string> {
-            return Promise.resolve("");
-        }
-
-        isValidToken(token: string): boolean {
-            return isValidAccessToken;
-        }
-    };
 });

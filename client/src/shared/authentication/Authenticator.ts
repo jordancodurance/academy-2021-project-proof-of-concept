@@ -1,7 +1,9 @@
+import {AuthenticatedUser} from "./AuthenticatedUser";
+
 export interface Authenticator {
 
-    isValidToken(token: string): boolean
+    isValidToken(token: string): boolean;
 
-    getAccessToken(): Promise<string>;
+    getAuthenticatedUser(): Promise<AuthenticatedUser>;
 
 }
