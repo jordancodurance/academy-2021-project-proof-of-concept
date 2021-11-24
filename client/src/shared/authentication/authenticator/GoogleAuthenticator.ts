@@ -12,11 +12,15 @@ export class GoogleAuthenticator implements Authenticator {
     }
 
     isValidToken(token: string): boolean {
-        const decodedToken = jwtDecode<JwtPayload>(token);
-        const tokenExpiry = decodedToken.exp;
-        if (tokenExpiry === undefined) return false;
+        try {
+            const decodedToken = jwtDecode<JwtPayload>(token);
+            const tokenExpiry = decodedToken.exp;
+            if (tokenExpiry === undefined) return false;
 
-        return (tokenExpiry * 1000) > Date.now();
+            return (tokenExpiry * 1000) > Date.now();
+        } catch (e) {
+            return false;
+        }
     }
 
     async getAuthenticatedUser(): Promise<AuthenticatedUser> {

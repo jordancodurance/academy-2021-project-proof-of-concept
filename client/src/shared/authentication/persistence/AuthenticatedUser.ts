@@ -1,6 +1,6 @@
 export type AuthenticatedUser = {
     name: string,
     email: string,
-    profileImageUrl: string
+    profileImageUrl: string,
     accessToken: string
 }

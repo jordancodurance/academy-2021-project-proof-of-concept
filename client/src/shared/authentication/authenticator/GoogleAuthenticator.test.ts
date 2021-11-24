@@ -26,6 +26,10 @@ describe('google authenticator should', () => {
         expect(googleAuthenticator.isValidToken(expiredToken)).toBeFalsy();
     });
 
+    test('verify that a token is invalid when not a json web token format', () => {
+        expect(googleAuthenticator.isValidToken('fake-token')).toBeFalsy();
+    });
+
     test('get authenticated user from google', async () => {
         const googleUser: gapi.auth2.GoogleUser = {
             getAuthResponse(): gapi.auth2.AuthResponse {
