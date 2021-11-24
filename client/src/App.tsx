@@ -4,7 +4,7 @@ import Home from "./home/Home";
 import Login from "./login/Login";
 import {AuthenticatedRouteGuard} from "./shared/navigation/AuthenticatedRouteGuard";
 import {GoogleAuthenticator} from "./shared/authentication/authenticator/GoogleAuthenticator";
-import {LocalStorageAuthenticatedUserStore} from "./shared/authentication/LocalStorageAuthenticatedUserStore";
+import {LocalStorageAuthenticatedUserStore} from "./shared/authentication/persistence/LocalStorageAuthenticatedUserStore";
 import {LoginPolicyService} from "./login/LoginPolicyService";
 import {AuthenticatedAxiosClient} from "./shared/http/AuthenticatedAxiosClient";
 import {ReactRouterApplicationNavigator} from "./shared/navigation/ReactRouterApplicationNavigator";

@@ -1,4 +1,4 @@
-import {AuthenticatedUser} from "../AuthenticatedUser";
+import {AuthenticatedUser} from "../persistence/AuthenticatedUser";
 
 export interface Authenticator {
 
